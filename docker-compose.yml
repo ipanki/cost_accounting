@@ -1,0 +1,25 @@
+version: "3.7"
+services:
+  postgres:
+    container_name: manager-db
+    image: postgres:12-alpine
+    environment:
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    volumes:
+      - ./.var/postgresql:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  app:
+    container_name: manager-app
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - POSTGRES_HOST=postgres
+    depends_on:
+      - postgres
