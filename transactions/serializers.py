@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from manager.models import Tag, Transaction
+from transactions.models import Category, Transaction
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -21,14 +21,14 @@ class RegistrationSerializer(serializers.ModelSerializer):
 class ShowCategoriesSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Tag
+        model = Category
         fields = ('id', 'name', 'user')
 
 
 class EditCategoriesSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Tag
+        model = Category
         fields = ('name',)
 
 
@@ -36,7 +36,7 @@ class CreateAccountingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Transaction
-        fields = ('organization', 'amount', 'tag', 'income')
+        fields = ('organization', 'amount', 'category', 'income')
 
 
 class ShowAccountingSerializer(serializers.ModelSerializer):
@@ -44,12 +44,12 @@ class ShowAccountingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Transaction
-        fields = ('id', 'organization', 'amount', 'tag', 'income', 'created_at')
+        fields = ('id', 'organization', 'amount', 'category', 'income', 'created_at')
 
 
 class ReportRowSerializer(serializers.Serializer):
-    tagId = serializers.IntegerField(source='tag__id')
-    tagName = serializers.CharField(source='tag__name')
+    tagId = serializers.IntegerField(source='category__id')
+    tagName = serializers.CharField(source='category__name')
     total = serializers.IntegerField(source='amount')
 
 

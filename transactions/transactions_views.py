@@ -5,8 +5,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework import filters
 
-from manager.serializers import CreateAccountingSerializer, ShowAccountingSerializer, ReportSerializer
-from manager.models import Transaction
+from transactions.serializers import CreateAccountingSerializer, ShowAccountingSerializer, ReportSerializer
+from transactions.models import Transaction
 
 
 class TransactionsViewSet(viewsets.ModelViewSet):
@@ -29,17 +29,16 @@ class TransactionsViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'], url_path='balance')
     def show_balance(self, request):
-        sum_expenses = Transaction.objects.filter(user=request.user, income=False).aggregate(expenses=Sum('amount'))
-        sum_incomes = Transaction.objects.filter(user=request.user, income=True).aggregate(incomes=Sum('amount'))
-        print(sum_expenses)
-        return Response(status=status.HTTP_200_OK,
-                        data=f"Your balance is {sum_incomes['incomes'] - sum_expenses['expenses']}$")
+        totals = Transaction.objects.filter(user=request.user).values('income').annotate(total=Sum('amount'))
+        balance = 0
+        for row in totals:
+            balance += row['total'] if row['income'] else -row['total']
+        return Response(status=status.HTTP_200_OK, data=balance)
 
     @action(detail=False, methods=['get'])
     def report(self, request):
-        stats = Transaction.objects.filter(user=request.user).values('tag__id', 'tag__name', 'income').annotate(
-            amount=Sum('amount'))
-        print(stats)
+        stats = Transaction.objects.filter(user=request.user).values('category__id', 'category__name', 'income')\
+            .annotate(amount=Sum('amount'))
         return Response(status=status.HTTP_200_OK, data=ReportSerializer(
         {
             "incomes": filter(lambda row: row['income'], stats),

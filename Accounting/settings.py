@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'manager.apps.ManagerConfig',
+    'transactions.apps.TransactionsConfig',
+    'authentication.apps.AuthenticationConfig',
     'django_filters',
     'django_cron',
 ]
@@ -59,7 +60,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'CostAccounting.urls'
+ROOT_URLCONF = 'Accounting.urls'
 
 TEMPLATES = [
     {
@@ -77,7 +78,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'CostAccounting.wsgi.application'
+WSGI_APPLICATION = 'Accounting.wsgi.application'
 
 
 # Database
@@ -137,7 +138,7 @@ REST_FRAMEWORK = {
     ),
     'PAGE_SIZE': 10,
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'manager.authentication.SafeJWTAuthentication',
+        'authentication.authentication.SafeJWTAuthentication',
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -165,7 +166,10 @@ REFRESH_TOKEN_SECRET = os.getenv('REFRESH_TOKEN_SECRET')
 
 
 CRON_CLASSES = [
-    "manager.cron.SendMail",
+    "transactions.cron.SendMail",
 ]
 
 EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
+
+DEFAULT_CATEGORIES = ("Забота о себе", "Зарплата", "Здоровье и фитнес", "Кафе и рестораны", "Машина", "Образование",
+                      "Отдых и развлечения", "Платежи, комиссии", "Покупки: одежда, техника", "Продукты", "Проезд")

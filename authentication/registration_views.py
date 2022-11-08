@@ -1,13 +1,13 @@
 from rest_framework.response import Response
-from rest_framework import exceptions, status
+from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ViewSet
 from rest_framework.decorators import action
 from rest_framework.decorators import  permission_classes
 
-from manager.serializers import RegistrationSerializer
-from manager.utils import login_user
-from manager.services import adding_categories
+from transactions.serializers import RegistrationSerializer
+from authentication.utils import login_user
+from authentication.services import adding_categories
 
 
 class RegistrationViewSet(ViewSet):
@@ -18,8 +18,8 @@ class RegistrationViewSet(ViewSet):
         password = request.data.get('password')
         serializer = RegistrationSerializer(data={'username': user, 'password': password})
         serializer.is_valid(raise_exception=True)
-        serializer.save()
-        adding_categories(user)
+        new_user = serializer.save()
+        adding_categories(new_user)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 

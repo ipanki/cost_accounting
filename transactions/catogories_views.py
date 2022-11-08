@@ -1,16 +1,13 @@
-from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.viewsets import ViewSet
-from manager.serializers import ShowCategoriesSerializer, EditCategoriesSerializer
-from manager.models import Tag
+from transactions.serializers import ShowCategoriesSerializer, EditCategoriesSerializer
+from transactions.models import Category
 
 
 class CategoriesViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = ShowCategoriesSerializer
-    queryset = Tag.objects
+    queryset = Category.objects
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
