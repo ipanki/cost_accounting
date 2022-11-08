@@ -1,13 +1,15 @@
 from django.db.models import Sum
-from rest_framework.response import Response
-from rest_framework import status, viewsets
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
-from rest_framework import filters
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
-from transactions.serializers import CreateAccountingSerializer, ShowAccountingSerializer, ReportSerializer, \
-    ShowCategoriesSerializer, EditCategoriesSerializer
-from transactions.models import Transaction, Category
+from transactions.models import Category, Transaction
+from transactions.serializers import (CreateAccountingSerializer,
+                                      EditCategoriesSerializer,
+                                      ReportSerializer,
+                                      ShowAccountingSerializer,
+                                      ShowCategoriesSerializer)
 
 
 class CategoriesViewSet(viewsets.ModelViewSet):
@@ -47,7 +49,8 @@ class TransactionsViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'], url_path='balance')
     def show_balance(self, request):
-        totals = Transaction.objects.filter(user=request.user).values('income').annotate(total=Sum('amount'))
+        totals = Transaction.objects.filter(user=request.user).values(
+            'income').annotate(total=Sum('amount'))
         balance = 0
         for row in totals:
             balance += row['total'] if row['income'] else -row['total']
@@ -58,12 +61,7 @@ class TransactionsViewSet(viewsets.ModelViewSet):
         stats = Transaction.objects.filter(user=request.user).values('category__id', 'category__name', 'income')\
             .annotate(amount=Sum('amount'))
         return Response(status=status.HTTP_200_OK, data=ReportSerializer(
-        {
-            "incomes": filter(lambda row: row['income'], stats),
-            "expenses": filter(lambda row: not row['income'], stats)
-        }).data)
-
-
-
-
-
+            {
+                "incomes": filter(lambda row: row['income'], stats),
+                "expenses": filter(lambda row: not row['income'], stats)
+            }).data)

@@ -5,11 +5,13 @@ from django.db.models import BigIntegerField
 
 class Category(models.Model):
     name = models.CharField(max_length=30)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
 
 
 class Transaction(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
     organization = models.CharField(max_length=30)
     amount = BigIntegerField(blank=False)
     category = models.ForeignKey(Category, on_delete=models.PROTECT)

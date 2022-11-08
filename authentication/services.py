@@ -1,5 +1,6 @@
-from transactions.models import Category
 from django.conf import settings
+
+from transactions.models import Category
 
 
 def adding_categories(user):

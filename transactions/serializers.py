@@ -1,5 +1,6 @@
-from rest_framework import serializers
 from django.contrib.auth.models import User
+from rest_framework import serializers
+
 from transactions.models import Category, Transaction
 
 
@@ -44,7 +45,8 @@ class ShowAccountingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Transaction
-        fields = ('id', 'organization', 'amount', 'category', 'income', 'created_at')
+        fields = ('id', 'organization', 'amount',
+                  'category', 'income', 'created_at')
 
 
 class ReportRowSerializer(serializers.Serializer):
@@ -56,6 +58,3 @@ class ReportRowSerializer(serializers.Serializer):
 class ReportSerializer(serializers.Serializer):
     expenses = ReportRowSerializer(many=True)
     incomes = ReportRowSerializer(many=True)
-
-
-
