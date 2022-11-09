@@ -3,8 +3,10 @@ from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.viewsets import ViewSet
 
 from transactions.models import Category, Transaction
+from transactions.services import get_summary_report
 from transactions.serializers import (CreateAccountingSerializer,
                                       EditCategoriesSerializer,
                                       ReportSerializer,
@@ -47,6 +49,10 @@ class TransactionsViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+
+class ReportsViewSet(ViewSet):
+    permission_classes = (IsAuthenticated,)
+
     @action(detail=False, methods=['get'], url_path='balance')
     def show_balance(self, request):
         totals = Transaction.objects.filter(user=request.user).values(
@@ -57,11 +63,10 @@ class TransactionsViewSet(viewsets.ModelViewSet):
         return Response(status=status.HTTP_200_OK, data=balance)
 
     @action(detail=False, methods=['get'])
-    def report(self, request):
-        stats = Transaction.objects.filter(user=request.user).values('category__id', 'category__name', 'income')\
-            .annotate(amount=Sum('amount'))
+    def summary(self, request):
+        incomes, expenses = get_summary_report(request.user)
         return Response(status=status.HTTP_200_OK, data=ReportSerializer(
             {
-                "incomes": filter(lambda row: row['income'], stats),
-                "expenses": filter(lambda row: not row['income'], stats)
+                "incomes": filter(lambda row: row['income'], incomes),
+                "expenses": filter(lambda row: not row['income'], expenses)
             }).data)

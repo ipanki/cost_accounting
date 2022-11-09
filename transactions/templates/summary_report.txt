@@ -1,0 +1,11 @@
+Hello {{ username }}, your transactions report.
+
+Your incomes:
+{% for report in incomes %}
+ {{ report.category__name }} -  {{ report.amount }}
+{% endfor %}
+
+Your expenses:
+{% for report in expenses %}
+ {{ report.category__name }} - {{ report.amount }}
+{% endfor %}

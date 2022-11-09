@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'django_extensions',
     'transactions.apps.TransactionsConfig',
     'authentication.apps.AuthenticationConfig',
     'django_filters',
@@ -65,7 +66,7 @@ ROOT_URLCONF = 'Accounting.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -170,6 +171,9 @@ CRON_CLASSES = [
 ]
 
 EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
 
-DEFAULT_CATEGORIES = ("Забота о себе", "Зарплата", "Здоровье и фитнес", "Кафе и рестораны", "Машина", "Образование",
-                      "Отдых и развлечения", "Платежи, комиссии", "Покупки: одежда, техника", "Продукты", "Проезд")
+DEFAULT_CATEGORIES_NAME = ("Забота о себе", "Зарплата", "Здоровье и фитнес", "Кафе и рестораны", "Машина",
+                            "Образование","Отдых и развлечения", "Платежи, комиссии", "Покупки: одежда, техника",
+                            "Продукты", "Проезд")

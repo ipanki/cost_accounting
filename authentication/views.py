@@ -5,7 +5,6 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 
 from authentication.middleware import login_user
-from authentication.services import adding_categories
 from transactions.serializers import RegistrationSerializer
 
 
@@ -18,9 +17,7 @@ class RegistrationViewSet(ViewSet):
         serializer = RegistrationSerializer(
             data={'username': user, 'password': password})
         serializer.is_valid(raise_exception=True)
-        new_user = serializer.save()
-        adding_categories(new_user)
-
+        serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     @permission_classes([AllowAny])

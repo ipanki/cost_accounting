@@ -32,6 +32,7 @@ wrapt = "1.13.3"
 sqlalchemy = "1.4.43"
 django-cron = "0.6.0"
 pre-commit = "*"
+django-extensions = "*"
 
 [dev-packages]
 

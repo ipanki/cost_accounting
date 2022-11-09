@@ -6,9 +6,9 @@ from transactions import views
 router = routers.DefaultRouter()
 router.register('categories', views.CategoriesViewSet, 'categories')
 router.register('transactions', views.TransactionsViewSet, 'accounting')
+router.register('report', views.ReportsViewSet, 'report')
 
 urlpatterns = [
-    path('', include((router.urls, 'categories'), namespace='categories')),
-    path('', include((router.urls, 'accounting'), namespace='accounting')),
+    path('', include(router.urls)),
 
 ]

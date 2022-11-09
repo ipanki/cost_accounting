@@ -7,6 +7,6 @@ router = routers.DefaultRouter()
 router.register('auth', views.RegistrationViewSet, 'auth')
 
 urlpatterns = [
-    path('', include((router.urls, 'signup'), namespace='auth')),
+    path('', include(router.urls)),
 
 ]
