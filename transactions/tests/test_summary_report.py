@@ -1,7 +1,8 @@
-from django.test import TestCase
-from transactions.services import get_summary_report
 from django.contrib.auth.models import User
+from django.test import TestCase
+
 from transactions.models import Transaction
+from transactions.services import get_summary_report
 
 
 class SummaryReportTestCase(TestCase):
@@ -19,5 +20,7 @@ class SummaryReportTestCase(TestCase):
         self.assertEqual(1, len(incomes))
         self.assertEqual(1, len(expenses))
 
-        self.assertEqual({'category__id': category_income.id, 'category__name': 'Зарплата', 'income': True, 'amount': 100}, incomes[0])
-        self.assertEqual({'category__id': category_expense.id, 'category__name': 'Машина', 'income': False, 'amount': 15}, expenses[0])
+        self.assertEqual({'category__id': category_income.id,
+                         'category__name': 'Зарплата', 'income': True, 'amount': 100}, incomes[0])
+        self.assertEqual({'category__id': category_expense.id,
+                         'category__name': 'Машина', 'income': False, 'amount': 15}, expenses[0])

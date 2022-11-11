@@ -1,7 +1,8 @@
-from django.test import TestCase
-from transactions.services import get_balance
 from django.contrib.auth.models import User
+from django.test import TestCase
+
 from transactions.models import Transaction
+from transactions.services import get_balance
 
 
 class BalanceTestCase(TestCase):

@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
-from django_cron import CronJobBase, Schedule
 from django.template.loader import render_to_string
+from django_cron import CronJobBase, Schedule
+
 from transactions.services import get_summary_report
 
 
@@ -15,7 +16,8 @@ class SendSummaryReports(CronJobBase):
     def do(self):
         for user in User.objects.all():
             incomes, expenses = get_summary_report(user)
-            msg_plain = render_to_string('summary_report.txt', {'username': user, 'incomes': incomes, 'expenses': expenses})
+            msg_plain = render_to_string('summary_report.txt', {
+                                         'username': user, 'incomes': incomes, 'expenses': expenses})
             send_mail(
                 f'{user} New transactions report',
                 f"{msg_plain}",

@@ -6,12 +6,12 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 
 from transactions.models import Category, Transaction
-from transactions.services import get_summary_report, get_balance
 from transactions.serializers import (CreateAccountingSerializer,
                                       EditCategoriesSerializer,
                                       ReportSerializer,
                                       ShowAccountingSerializer,
                                       ShowCategoriesSerializer)
+from transactions.services import get_balance, get_summary_report
 
 
 class CategoriesViewSet(viewsets.ModelViewSet):
