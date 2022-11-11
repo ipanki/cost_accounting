@@ -6,7 +6,8 @@ from django.db.models import BigIntegerField
 class Category(models.Model):
     name = models.CharField(max_length=30)
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE)
+                             on_delete=models.CASCADE,
+                             related_name="categories")
 
 
 class Transaction(models.Model):

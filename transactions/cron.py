@@ -5,7 +5,7 @@ from django.template.loader import render_to_string
 from transactions.services import get_summary_report
 
 
-class SendMail(CronJobBase):
+class SendSummaryReports(CronJobBase):
     RUN_AT_TIMES = ['18:47']
     RETRY_AFTER_FAILURE_MINS = 1
     schedule = Schedule(run_at_times=RUN_AT_TIMES,

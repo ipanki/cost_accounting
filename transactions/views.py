@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 
 from transactions.models import Category, Transaction
-from transactions.services import get_summary_report
+from transactions.services import get_summary_report, get_balance
 from transactions.serializers import (CreateAccountingSerializer,
                                       EditCategoriesSerializer,
                                       ReportSerializer,
@@ -55,18 +55,13 @@ class ReportsViewSet(ViewSet):
 
     @action(detail=False, methods=['get'], url_path='balance')
     def show_balance(self, request):
-        totals = Transaction.objects.filter(user=request.user).values(
-            'income').annotate(total=Sum('amount'))
-        balance = 0
-        for row in totals:
-            balance += row['total'] if row['income'] else -row['total']
-        return Response(status=status.HTTP_200_OK, data=balance)
+        return Response(status=status.HTTP_200_OK, data=get_balance(request.user))
 
     @action(detail=False, methods=['get'])
     def summary(self, request):
         incomes, expenses = get_summary_report(request.user)
         return Response(status=status.HTTP_200_OK, data=ReportSerializer(
             {
-                "incomes": filter(lambda row: row['income'], incomes),
-                "expenses": filter(lambda row: not row['income'], expenses)
+                "incomes": incomes,
+                "expenses": expenses
             }).data)

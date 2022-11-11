@@ -50,8 +50,8 @@ class ShowAccountingSerializer(serializers.ModelSerializer):
 
 
 class ReportRowSerializer(serializers.Serializer):
-    tagId = serializers.IntegerField(source='category__id')
-    tagName = serializers.CharField(source='category__name')
+    categoryId = serializers.IntegerField(source='category__id')
+    categoryName = serializers.CharField(source='category__name')
     total = serializers.IntegerField(source='amount')
 
 

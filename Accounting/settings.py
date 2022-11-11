@@ -167,7 +167,7 @@ REFRESH_TOKEN_SECRET = os.getenv('REFRESH_TOKEN_SECRET')
 
 
 CRON_CLASSES = [
-    "transactions.cron.SendMail",
+    "transactions.cron.SendSummaryReports",
 ]
 
 EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
