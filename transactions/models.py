@@ -12,7 +12,7 @@ class Category(models.Model):
 
 class Transaction(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE)
+                             on_delete=models.CASCADE, related_name="transactions")
     organization = models.CharField(max_length=30)
     amount = BigIntegerField(blank=False)
     category = models.ForeignKey(Category, on_delete=models.PROTECT)

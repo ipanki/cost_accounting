@@ -3,8 +3,6 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from transactions.models import Transaction
-
 
 class TransactionApiUserTestCase(APITestCase):
     @classmethod
@@ -13,10 +11,10 @@ class TransactionApiUserTestCase(APITestCase):
             username='testuser', password='12345')
         cls.category_income = cls.user.categories.get(name='Зарплата')
         cls.category_expense = cls.user.categories.get(name='Машина')
-        Transaction.objects.create(user=cls.user, organization="TestOrg",
-                                   amount=100, category=cls.category_income, income=True)
-        Transaction.objects.create(user=cls.user, organization="TestOrg",
-                                   amount=15, category=cls.category_expense, income=False)
+        cls.user.transactions.create(organization="TestOrg",
+                                     amount=100, category=cls.category_income, income=True)
+        cls.user.transactions.create(organization="TestOrg",
+                                     amount=15, category=cls.category_expense, income=False)
 
     def setUp(self):
         self.client.login(username=self.user.username, password="12345")

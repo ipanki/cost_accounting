@@ -33,6 +33,7 @@ sqlalchemy = "1.4.43"
 django-cron = "0.6.0"
 pre-commit = "*"
 django-extensions = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 

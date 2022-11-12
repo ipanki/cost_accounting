@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
 
-from transactions.models import Transaction
 from transactions.services import get_summary_report
 
 
@@ -10,10 +9,10 @@ class SummaryReportTestCase(TestCase):
         self.user = User.objects.create(username='testuser', password='12345')
         category_income = self.user.categories.get(name='Зарплата')
         category_expense = self.user.categories.get(name='Машина')
-        Transaction.objects.create(user=self.user, organization="TestOrg", amount=100,
-                                   category=category_income, income=True)
-        Transaction.objects.create(user=self.user, organization="TestOrg2", amount=15,
-                                   category=category_expense, income=False)
+        self.user.transactions.create(organization="TestOrg", amount=100,
+                                      category=category_income, income=True)
+        self.user.transactions.create(organization="TestOrg2", amount=15,
+                                      category=category_expense, income=False)
 
         incomes, expenses = get_summary_report(self.user)
 

@@ -24,3 +24,4 @@ wcwidth==0.2.5
 wrapt==1.13.3
 sqlalchemy==1.4.43
 django-cron==0.6.0
+django-extensions==3.2.1
