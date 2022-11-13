@@ -14,7 +14,7 @@ class Transaction(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE, related_name="transactions")
     organization = models.CharField(max_length=30)
-    amount = BigIntegerField(blank=False)
+    amount = BigIntegerField(blank=False)  # Amount in cents to avoid rounding errors
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
     income = models.BooleanField(default=False)
