@@ -1,6 +1,11 @@
-SELECT br.id, br.title, COUNT(nt.id) AS total_notebooks
-    FROM public.notebooks_notebook nt
-    JOIN public.notebooks_brand br ON br.id=nt.brand_id
-	GROUP BY br.id, br.title
-	ORDER by total_notebooks DESC
+SELECT 
+	br.title, COUNT(nt.id) AS count
+FROM 
+	notebooks_notebook nt
+	LEFT JOIN 
+	notebooks_brand br ON br.id=nt.brand_id
+GROUP BY 
+	br.title
+ORDER BY
+	count DESC
  
